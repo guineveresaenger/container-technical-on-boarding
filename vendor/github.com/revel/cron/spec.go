@@ -1,6 +1,8 @@
 package cron
 
-import "time"
+import (
+	"time"
+)
 
 // SpecSchedule specifies a duty cycle (to the second granularity), based on a
 // traditional crontab specification. It is computed initially and stored as bit sets.
@@ -70,7 +72,7 @@ func (s *SpecSchedule) Next(t time.Time) time.Time {
 	// If no time is found within five years, return zero.
 	yearLimit := t.Year() + 5
 
-Wrap:
+WRAP:
 	if t.Year() > yearLimit {
 		return time.Time{}
 	}
@@ -88,7 +90,7 @@ Wrap:
 
 		// Wrapped around.
 		if t.Month() == time.January {
-			goto Wrap
+			goto WRAP
 		}
 	}
 
@@ -101,7 +103,7 @@ Wrap:
 		t = t.AddDate(0, 0, 1)
 
 		if t.Day() == 1 {
-			goto Wrap
+			goto WRAP
 		}
 	}
 
@@ -113,31 +115,31 @@ Wrap:
 		t = t.Add(1 * time.Hour)
 
 		if t.Hour() == 0 {
-			goto Wrap
+			goto WRAP
 		}
 	}
 
 	for 1<<uint(t.Minute())&s.Minute == 0 {
 		if !added {
 			added = true
-			t = t.Truncate(time.Minute)
+			t = time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), 0, 0, t.Location())
 		}
 		t = t.Add(1 * time.Minute)
 
 		if t.Minute() == 0 {
-			goto Wrap
+			goto WRAP
 		}
 	}
 
 	for 1<<uint(t.Second())&s.Second == 0 {
 		if !added {
 			added = true
-			t = t.Truncate(time.Second)
+			t = time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), 0, t.Location())
 		}
 		t = t.Add(1 * time.Second)
 
 		if t.Second() == 0 {
-			goto Wrap
+			goto WRAP
 		}
 	}
 

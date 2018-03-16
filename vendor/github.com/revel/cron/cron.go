@@ -3,8 +3,6 @@
 package cron
 
 import (
-	"log"
-	"runtime"
 	"sort"
 	"time"
 )
@@ -18,7 +16,6 @@ type Cron struct {
 	add      chan *Entry
 	snapshot chan []*Entry
 	running  bool
-	ErrorLog *log.Logger
 }
 
 // Job is an interface for submitted cron jobs.
@@ -48,17 +45,6 @@ type Entry struct {
 
 	// The Job to run.
 	Job Job
-
-}
-
-// Runs the entry, if cron is running assign next scheduled time
-func (e *Entry) run(c *Cron,now time.Time) {
-	// It is ok to use a nil pointer with the cron function runWithRecovery
-	go c.runWithRecovery(e.Job)
-	e.Prev = now
-	if c.running {
-		e.Next = e.Schedule.Next(now)
-	}
 }
 
 // byTime is a wrapper for sorting the entry array by time
@@ -88,7 +74,6 @@ func New() *Cron {
 		stop:     make(chan struct{}),
 		snapshot: make(chan []*Entry),
 		running:  false,
-		ErrorLog: nil,
 	}
 }
 
@@ -98,18 +83,13 @@ type FuncJob func()
 func (f FuncJob) Run() { f() }
 
 // AddFunc adds a func to the Cron to be run on the given schedule.
-func (c *Cron) AddFunc(spec string, cmd func()) error {
-	return c.AddJob(spec, FuncJob(cmd))
+func (c *Cron) AddFunc(spec string, cmd func()) {
+	c.AddJob(spec, FuncJob(cmd))
 }
 
-// AddJob adds a Job to the Cron to be run on the given schedule.
-func (c *Cron) AddJob(spec string, cmd Job) error {
-	schedule, err := Parse(spec)
-	if err != nil {
-		return err
-	}
-	c.Schedule(schedule, cmd)
-	return nil
+// AddFunc adds a Job to the Cron to be run on the given schedule.
+func (c *Cron) AddJob(spec string, cmd Job) {
+	c.Schedule(Parse(spec), cmd)
 }
 
 // Schedule adds a Job to the Cron to be run on the given schedule.
@@ -142,26 +122,6 @@ func (c *Cron) Start() {
 	go c.run()
 }
 
-// Runs a single entry, if entry was scheduled, reschedules the entry to run at next interval
-// if cron is running
-func (c *Cron) RunEntry(entryIndex int) {
-	if entryIndex>=0 && entryIndex<len(c.entries) {
-		c.entries[entryIndex].run(c, time.Now())
-	}
-}
-
-func (c *Cron) runWithRecovery(j Job) {
-	defer func() {
-		if r := recover(); r != nil {
-			const size = 64 << 10
-			buf := make([]byte, size)
-			buf = buf[:runtime.Stack(buf, false)]
-			c.logf("cron: panic running job: %v\n%s", r, buf)
-		}
-	}()
-	j.Run()
-}
-
 // Run the scheduler.. this is private just due to the need to synchronize
 // access to the 'running' state variable.
 func (c *Cron) run() {
@@ -191,13 +151,15 @@ func (c *Cron) run() {
 				if e.Next != effective {
 					break
 				}
-				e.run(c, now)
+				go e.Job.Run()
+				e.Prev = e.Next
+				e.Next = e.Schedule.Next(effective)
 			}
 			continue
 
 		case newEntry := <-c.add:
 			c.entries = append(c.entries, newEntry)
-			newEntry.Next = newEntry.Schedule.Next(time.Now().Local())
+			newEntry.Next = newEntry.Schedule.Next(now)
 
 		case <-c.snapshot:
 			c.snapshot <- c.entrySnapshot()
@@ -211,20 +173,8 @@ func (c *Cron) run() {
 	}
 }
 
-// Logs an error to stderr or to the configured error log
-func (c *Cron) logf(format string, args ...interface{}) {
-	if c.ErrorLog != nil {
-		c.ErrorLog.Printf(format, args...)
-	} else {
-		log.Printf(format, args...)
-	}
-}
-
-// Stop stops the cron scheduler if it is running; otherwise it does nothing.
+// Stop the cron scheduler.
 func (c *Cron) Stop() {
-	if !c.running {
-		return
-	}
 	c.stop <- struct{}{}
 	c.running = false
 }

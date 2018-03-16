@@ -1,7 +1,6 @@
 package cron
 
 import (
-	"fmt"
 	"log"
 	"math"
 	"strconv"
@@ -10,21 +9,14 @@ import (
 )
 
 // Parse returns a new crontab schedule representing the given spec.
-// It returns a descriptive error if the spec is not valid.
+// It panics with a descriptive error if the spec is not valid.
 //
 // It accepts
 //   - Full crontab specs, e.g. "* * * * * ?"
 //   - Descriptors, e.g. "@midnight", "@every 1h30m"
-func Parse(spec string) (_ Schedule, err error) {
-	// Convert panics into errors
-	defer func() {
-		if recovered := recover(); recovered != nil {
-			err = fmt.Errorf("%v", recovered)
-		}
-	}()
-
+func Parse(spec string) Schedule {
 	if spec[0] == '@' {
-		return parseDescriptor(spec), nil
+		return parseDescriptor(spec)
 	}
 
 	// Split on whitespace.  We require 5 or 6 fields.
@@ -48,7 +40,7 @@ func Parse(spec string) (_ Schedule, err error) {
 		Dow:    getField(fields[5], dow),
 	}
 
-	return schedule, nil
+	return schedule
 }
 
 // getField returns an Int with the bits set representing all of the times that
