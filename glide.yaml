@@ -1,6 +1,7 @@
 package: github.com/samsung-cnct/container-technical-on-boarding
 import:
 - package: github.com/google/go-github
+  version: v14.0.0
   subpackages:
   - github
 - package: github.com/masterminds/semver
