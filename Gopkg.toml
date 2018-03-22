@@ -64,3 +64,4 @@
 [prune]
   go-tests = true
   unused-packages = true
+  non-go = true
