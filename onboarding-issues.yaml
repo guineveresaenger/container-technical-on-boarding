@@ -11,6 +11,11 @@ task_owners: # The following will be referenced as assignees in GitHub
 
 
 tasks:
+  - title: Add an entirely new card
+    assignee: *new_hire
+    description: |
+      Learn what a container is!
+
   - title: Read Cloud Native Computing Team General Confluence Page
     assignee: *new_hire
     description: |
