@@ -45,7 +45,7 @@ $(REVEL):
 	$(REVEL) version
 
 .PHONY: all
-all: vendor lint build test ## Run all targets (clean, vendor, lint, build, test)
+all: clean vendor lint build test ## Run all targets (clean, vendor, lint, build, test)
 
 .PHONY: vendor
 vendor: $(DEP) Gopkg.lock Gopkg.toml
