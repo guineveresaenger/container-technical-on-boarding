@@ -72,6 +72,7 @@ const (
 	OnboardRepoName         string = "onboard.repo"
 	OnboardTasksFileName    string = "onboard.tasks.file"
 	OnboardUserName         string = "onboard.user"
+	OnboardPath				string = "onboard.path"
 )
 
 // SetupVersion for revel web app from revel configs
@@ -103,6 +104,7 @@ func LoadConfigs() {
 	Configs[OnboardOrgName] = revel.Config.StringDefault(OnboardOrgName, "")
 	Configs[OnboardRepoName] = revel.Config.StringDefault(OnboardRepoName, "")
 	Configs[OnboardTasksFileName] = revel.Config.StringDefault(OnboardTasksFileName, "")
+	Configs[OnboardPath] = revel.Config.StringDefault(OnboardPath, "")
 
 	for env, value := range Configs {
 		if len(value) == 0 {
@@ -115,7 +117,8 @@ func LoadConfigs() {
 // SetupScheme for executing an onboarding workflow
 func SetupScheme() {
 	configFilename := Configs[OnboardTasksFileName]
-	setup, err := onboarding.NewSetupScheme(configFilename, &Configs)
+	onboardPath := Configs[OnboardPath]
+	setup, err := onboarding.NewSetupScheme(configFilename, onboardPath &Configs)
 	if err != nil {
 		revel.ERROR.Fatalf("Cannat create an onboarding github setup scheme: %v", err)
 	}
