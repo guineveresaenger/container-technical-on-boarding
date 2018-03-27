@@ -36,7 +36,7 @@ func (assignee *indirectAssignee) String() string {
 	return assignee.GithubUsername
 }
 
-func (setup *SetupScheme) ingest(data []byte, environ *map[string]string) error {
+func (setup *SetupScheme) ingest(data []byte, track string, environ *map[string]string) error {
 	var rendered bytes.Buffer
 
 	context := map[string]map[string]string{
@@ -60,19 +60,19 @@ func (setup *SetupScheme) ingest(data []byte, environ *map[string]string) error 
 	return err
 }
 
-func (setup *SetupScheme) load(filename string, environ *map[string]string) error {
+func (setup *SetupScheme) load(filename, track string, environ *map[string]string) error {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return setup.ingest(data, environ)
+	return setup.ingest(data, track, environ)
 }
 
 // NewSetupScheme constructs a SetupScheme instance, the combined effect of a template file and environment variables.
-func NewSetupScheme(filename string, environ *map[string]string) (*SetupScheme, error) {
+func NewSetupScheme(filename, track string, environ *map[string]string) (*SetupScheme, error) {
 	setup := SetupScheme{}
-	setup.load(filename, environ)
+	setup.load(filename, track, environ)
 
 	return &setup, nil
 }
