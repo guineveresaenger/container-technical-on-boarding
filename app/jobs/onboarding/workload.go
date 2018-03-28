@@ -192,24 +192,21 @@ func (job GenerateProject) Run() {
 		for _, tag := range task.Tags {
 			fmt.Println(tag)
 			// TODO: get app-dev dynamically.
-			if tag == "app-dev" {
+			if tag == "app_dev" {
 				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
+				issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
+				if err != nil {
+					job.New <- jobs.NewError(job.ID, fmt.Sprintf("Failed to create issue - %s", task.Title), err.Error())
+					return
+				}
+				// NOTE: this fails with HTTP 422 when the the issue already has a card in the project.
+				_, err = repo.CreateCardForIssue(issue, columns["Backlog"])
+				if err != nil {
+					job.New <- jobs.NewError(job.ID, fmt.Sprintf("Error creating card - %v", err), err.Error())
+					// DO NOT return here.
+				}
 			}
 		}
-
-		issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
-		if err != nil {
-			job.New <- jobs.NewError(job.ID, fmt.Sprintf("Failed to create issue - %s", task.Title), err.Error())
-			return
-		}
-
-		// NOTE: this fails with HTTP 422 when the the issue already has a card in the project.
-		_, err = repo.CreateCardForIssue(issue, columns["Backlog"])
-		if err != nil {
-			job.New <- jobs.NewError(job.ID, fmt.Sprintf("Error creating card - %v", err), err.Error())
-			// DO NOT return here.
-		}
-
 	}
 
 	//https://github.com/alika/test-toby/projects
