@@ -13,9 +13,9 @@ type (
 	// TaskEntry represents individual tasks to be assigned
 	TaskEntry struct {
 		Title       string
-		Assignee    indirectAssignee 	`yaml:"assignee"`
-		Description string           	`yaml:"description,omitempty"`
-		Tags		[]string			`yaml: "tags,omitempty"` //TODO: add all the tags and determine if omitempty is what we want"
+		Assignee    indirectAssignee `yaml:"assignee"`
+		Description string           `yaml:"description,omitempty"`
+		Tags        []string         `yaml:"tags,omitempty"` //TODO: add all the tags and determine if omitempty is what we want"
 	}
 
 	indirectAssignee struct {

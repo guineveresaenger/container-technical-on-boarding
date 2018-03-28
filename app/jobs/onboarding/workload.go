@@ -192,7 +192,7 @@ func (job GenerateProject) Run() {
 		for _, tag := range task.Tags {
 			fmt.Println(tag)
 			// TODO: get app-dev dynamically.
-			if tag == "app-dev"{
+			if tag == "app-dev" {
 				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
 			}
 		}
