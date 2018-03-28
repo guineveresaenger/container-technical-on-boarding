@@ -19,7 +19,7 @@ tasks:
       3. Update the top section of the page, and add your name to the team member list.
       4. Familiarize yourself with [the wiki in general](https://samsung-cnct.atlassian.net/wiki/).
     tags:
-      - "cnct_hire"
+      - cnct_hire
   - title: Update the Team's Bio Blurbs
     assignee: *new_hire
     description: |
@@ -27,8 +27,8 @@ tasks:
 
       `https://samsung-cnct.atlassian.net/wiki/spaces/AG/pages/1212557/Team+Bio+Blurbs`
     tags:
-      - "app_dev"
-      - "cnct_hire"
+      - app_dev
+      - cnct_hire
 
   - title: Log into tooling
     assignee: *new_hire
@@ -39,21 +39,21 @@ tasks:
       - [ ] Related Cloud Computing services (AWS, GCP/GKE, etc)
       - [ ] Slack
     tags:
-      - "cnct_hire"
+      - cnct_hire
 
   - title: Read kraken-lib GitHub README
     assignee: *new_hire
     description: Reading is the new ... something.
     tags:
-      - "cnct_hire"
+      - cnct_hire
 
   - title: Spin up Kubernetes cluster on AWS using kraken
     assignee: *new_hire
     description: |
       See also: `https://github.com/samsung-cnct/kraken`
     tags:
-      - "app_dev"
-      - "cnct_hire"
+      - app_dev
+      - cnct_hire
 
   - title: Spin up Kubernetes cluster on AWS using the base Docker image
     assignee: *new_hire
