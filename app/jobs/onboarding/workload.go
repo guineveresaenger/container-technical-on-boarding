@@ -137,6 +137,8 @@ func (job GenerateProject) Run() {
 	username := auth.GithubUsername()
 	client, _ := auth.newWorkflowClient()
 
+	// TODO = read these somewhere track := job.Setup.Tasks[0].Tags
+
 	defer close(job.New)
 	job.New <- jobs.NewEvent(job.ID, "start", fmt.Sprintf("Starting project generation as %v", username))
 
@@ -187,7 +189,14 @@ func (job GenerateProject) Run() {
 	}
 
 	for _, task := range setup.Tasks {
-		job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
+		for _, tag := range task.Tags {
+			fmt.Println(tag)
+			// TODO: get app-dev dynamically.
+			if tag == "app-dev"{
+				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
+			}
+		}
+
 		issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
 		if err != nil {
 			job.New <- jobs.NewError(job.ID, fmt.Sprintf("Failed to create issue - %s", task.Title), err.Error())
