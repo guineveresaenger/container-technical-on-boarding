@@ -19,7 +19,12 @@
 <p>
     Please choose a Track for your project.
 </p>
-<p>
+
+<form action="/getTrack" method="GET">
+    <input type="text" name="mytrack" /><br/>
+    <input type="submit" value="Track" />
+</form>
+<!-- <p>
     <a class="btn btn-lg btn-primary" href="/workload">CNCT hire</a>
   </p>
   <p>
@@ -28,6 +33,10 @@
   <p>
     <a class="btn btn-lg btn-primary" href="/workload">cluster-operator</a>
   </p>
+</p> -->
+
+<p>
+    You chose Track {{.myTrack}}.
 </p>
 
 <div class="container">

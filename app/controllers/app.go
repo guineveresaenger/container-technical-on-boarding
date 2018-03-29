@@ -28,6 +28,12 @@ func (c App) Index() revel.Result {
 	return c.Render()
 }
 
+// GetTrack gets form input
+func (c App) GetTrack(mytrack string) revel.Result {
+	revel.INFO.Printf("The track %s was chosen.", mytrack)
+	return c.Redirect("/tracks")
+}
+
 // Auth initiates the oauth2 authorization request to github
 func (c App) Auth() revel.Result {
 	user := c.currentUser()
@@ -67,11 +73,22 @@ func (c App) AuthCallback() revel.Result {
 	user.Username = auth.GithubUsername()
 
 	revel.INFO.Printf("Successfully authenticated Github user: %s\n", user.Username)
-	return c.Redirect("/tracks")  //TODO: redirect to Tracks
+	return c.Redirect("/tracks") //TODO: redirect to Tracks
 }
 
 // Workload handles the initial workload page rendering
 func (c App) Workload() revel.Result {
+	user := c.currentUser()
+	if user == nil {
+		revel.ERROR.Printf("User not setup correctly")
+		return c.Redirect("/")
+	}
+
+	return c.Render(user)
+}
+
+// Tracks handles the initial track choice rendering
+func (c App) Tracks() revel.Result {
 	user := c.currentUser()
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
@@ -138,7 +155,7 @@ func (c App) WorkloadSocket(ws *websocket.Conn) revel.Result {
 			if !ok {
 				return nil
 			}
-			revel.INFO.Printf("Recieved: " + msg)
+			revel.INFO.Printf("Received: " + msg)
 		}
 	}
 }

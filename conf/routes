@@ -12,6 +12,7 @@ GET     /auth                                   App.Auth
 GET     /authcb                                 App.AuthCallback
 GET     /workload                               App.Workload
 GET     /tracks                                 App.Tracks
+GET     /getTrack                               App.GetTrack
 WS      /workload/socket                        App.WorkloadSocket
 
 # Ignore favicon requests
