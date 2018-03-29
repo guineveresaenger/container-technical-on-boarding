@@ -67,7 +67,7 @@ func (c App) AuthCallback() revel.Result {
 	user.Username = auth.GithubUsername()
 
 	revel.INFO.Printf("Successfully authenticated Github user: %s\n", user.Username)
-	return c.Redirect("/workload")  //TODO: redirect to Tracks
+	return c.Redirect("/tracks")  //TODO: redirect to Tracks
 }
 
 // Workload handles the initial workload page rendering

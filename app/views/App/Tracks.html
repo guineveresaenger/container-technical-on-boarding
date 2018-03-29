@@ -1,0 +1,43 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+
+<div class="container theme-showcase" role="main">
+
+<header class="jumbotron" style="background-color:#80f2db">
+  <div class="container">
+    <div class="row">
+      <h1>Tracks Available</h1>
+      <p>We have several different onboarding tracks, each tailored to the specific user case.</p>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>Instructions</h1>
+</div>
+
+<p>
+    Please choose a Track for your project.
+</p>
+<p>
+    <a class="btn btn-lg btn-primary" href="/workload">CNCT hire</a>
+  </p>
+  <p>
+    <a class="btn btn-lg btn-primary" href="/workload">app-dev</a>
+  </p>
+  <p>
+    <a class="btn btn-lg btn-primary" href="/workload">cluster-operator</a>
+  </p>
+</p>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+</div>
+
+{{template "footer.html" .}}
