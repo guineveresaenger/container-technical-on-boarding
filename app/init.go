@@ -72,6 +72,7 @@ const (
 	OnboardRepoName         string = "onboard.repo"
 	OnboardTasksFileName    string = "onboard.tasks.file"
 	OnboardUserName         string = "onboard.user"
+	OnboardTrack            string = "onboard.track"
 )
 
 // SetupVersion for revel web app from revel configs
@@ -103,6 +104,7 @@ func LoadConfigs() {
 	Configs[OnboardOrgName] = revel.Config.StringDefault(OnboardOrgName, "")
 	Configs[OnboardRepoName] = revel.Config.StringDefault(OnboardRepoName, "")
 	Configs[OnboardTasksFileName] = revel.Config.StringDefault(OnboardTasksFileName, "")
+	Configs[OnboardTrack] = revel.Config.StringDefault(OnboardTrack, "")
 
 	for env, value := range Configs {
 		if len(value) == 0 {
