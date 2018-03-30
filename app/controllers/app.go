@@ -80,6 +80,7 @@ func (c App) AuthCallback() revel.Result {
 func (c App) Workload(mytrack string) revel.Result {
 	revel.INFO.Printf("The track %s was chosen.", mytrack)
 	user := c.currentUser()
+	user.Track = mytrack
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
@@ -133,6 +134,7 @@ func (c App) WorkloadSocket(ws *websocket.Conn) revel.Result {
 		Setup:   app.Setup,
 		AuthEnv: user.AuthEnv,
 		New:     events,
+		Track:   user.Track,
 	}
 	jobs.StartJob(job)
 

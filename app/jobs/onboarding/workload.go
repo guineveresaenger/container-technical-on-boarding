@@ -128,6 +128,7 @@ type GenerateProject struct {
 	Setup   *SetupScheme
 	AuthEnv *AuthEnvironment
 	New     chan<- jobs.Event
+	Track   string
 }
 
 // Run implements the required cron.Job interface for revel job execution
@@ -136,6 +137,7 @@ func (job GenerateProject) Run() {
 	auth := job.AuthEnv
 	username := auth.GithubUsername()
 	client, _ := auth.newWorkflowClient()
+	track := job.Track
 
 	// TODO = read these somewhere track := job.Setup.Tasks[0].Tags
 
@@ -192,7 +194,7 @@ func (job GenerateProject) Run() {
 		for _, tag := range task.Tags {
 			fmt.Println(tag)
 			// TODO: get app-dev dynamically.
-			if tag == "app_dev" {
+			if tag == track {
 				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
 				issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
 				if err != nil {
