@@ -78,7 +78,7 @@ func (c App) AuthCallback() revel.Result {
 
 // Workload handles the initial workload page rendering
 func (c App) Workload(appDev, clusterOp, cnctHire string) revel.Result {
-	revel.INFO.Printf("The track %s was chosen.", appDev)
+	revel.INFO.Printf("The following tracks were chosen: %s, %s, %s", appDev, clusterOp, cnctHire)
 	user := c.currentUser()
 	var tracks []string
 	tracks = append(tracks, appDev, clusterOp, cnctHire)
