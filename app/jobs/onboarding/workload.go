@@ -128,7 +128,7 @@ type GenerateProject struct {
 	Setup   *SetupScheme
 	AuthEnv *AuthEnvironment
 	New     chan<- jobs.Event
-	Track   string
+	Tracks  []string
 }
 
 // Run implements the required cron.Job interface for revel job execution
@@ -137,7 +137,7 @@ func (job GenerateProject) Run() {
 	auth := job.AuthEnv
 	username := auth.GithubUsername()
 	client, _ := auth.newWorkflowClient()
-	track := job.Track
+	tracks := job.Tracks
 
 	// TODO = read these somewhere track := job.Setup.Tasks[0].Tags
 
@@ -194,7 +194,7 @@ func (job GenerateProject) Run() {
 		for _, tag := range task.Tags {
 			fmt.Println(tag)
 			// TODO: get app-dev dynamically.
-			if tag == track {
+			if tag == tracks[0] {
 				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
 				issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
 				if err != nil {
@@ -717,4 +717,14 @@ func (repo *WorkflowRepository) ColumnsPresent(project *github.Project, columns 
 	}
 
 	return (countMissing < 1), nil
+}
+
+// CheckTracks checks if a track tag exists in the slice the user passed down
+func CheckTracks(tracks []string, inputTrack string) bool {
+	for _, track := range tracks {
+		if track == inputTrack {
+			return true
+		}
+	}
+	return false
 }

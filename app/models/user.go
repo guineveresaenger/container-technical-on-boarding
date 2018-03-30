@@ -11,7 +11,7 @@ type User struct {
 	ID       int
 	Username string
 	AuthEnv  *onboarding.AuthEnvironment
-	Track    string
+	Tracks   []string
 }
 
 var db = make(map[int]*User)

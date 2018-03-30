@@ -77,16 +77,18 @@ func (c App) AuthCallback() revel.Result {
 }
 
 // Workload handles the initial workload page rendering
-func (c App) Workload(mytrack string) revel.Result {
-	revel.INFO.Printf("The track %s was chosen.", mytrack)
+func (c App) Workload(appDev, clusterOp, cnctHire string) revel.Result {
+	revel.INFO.Printf("The track %s was chosen.", appDev)
 	user := c.currentUser()
-	user.Track = mytrack
+	var tracks []string
+	tracks = append(tracks, appDev, clusterOp, cnctHire)
+	user.Tracks = tracks
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
 
-	return c.Render(user, mytrack)
+	return c.Render(user, tracks)
 }
 
 // Tracks handles the initial track choice rendering
@@ -134,7 +136,7 @@ func (c App) WorkloadSocket(ws *websocket.Conn) revel.Result {
 		Setup:   app.Setup,
 		AuthEnv: user.AuthEnv,
 		New:     events,
-		Track:   user.Track,
+		Tracks:  user.Tracks,
 	}
 	jobs.StartJob(job)
 
