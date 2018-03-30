@@ -31,7 +31,7 @@ func (c App) Index() revel.Result {
 // GetTrack gets form input
 func (c App) GetTrack(mytrack string) revel.Result {
 	revel.INFO.Printf("The track %s was chosen.", mytrack)
-	return c.Redirect("/tracks")
+	return c.Render(mytrack)
 }
 
 // Auth initiates the oauth2 authorization request to github
@@ -77,14 +77,15 @@ func (c App) AuthCallback() revel.Result {
 }
 
 // Workload handles the initial workload page rendering
-func (c App) Workload() revel.Result {
+func (c App) Workload(mytrack string) revel.Result {
+	revel.INFO.Printf("The track %s was chosen.", mytrack)
 	user := c.currentUser()
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
 
-	return c.Render(user)
+	return c.Render(user, mytrack)
 }
 
 // Tracks handles the initial track choice rendering
