@@ -194,7 +194,7 @@ func (job GenerateProject) Run() {
 		for _, tag := range task.Tags {
 			fmt.Println(tag)
 			// TODO: get app-dev dynamically.
-			if tag == tracks[0] {
+			if CheckTracks(tracks, tag) {
 				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
 				issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
 				if err != nil {
