@@ -21,9 +21,9 @@
 </p>
 
 <form action="/workload" method="POST">
-    <input type="checkbox" name="app_dev" value="app_dev"/> I'm an application developer<br/>
-    <input type="checkbox" name="cluster_op" value="cluster_op" /> I'm a cluster operator<br/>
-    <input type="checkbox" name="cnct_hire" value="cnct_hire"/> I'm a new hire at CNCT<br/>
+    {{ range .availableTracks }}
+      <input type="checkbox" name={{.}} value={{.}}/> I'm an application developer<br/>
+    {{end}}
     <input type="submit" value="Submit" />
 </form>
 

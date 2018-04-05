@@ -28,12 +28,6 @@ func (c App) Index() revel.Result {
 	return c.Render()
 }
 
-// GetTrack gets form input
-func (c App) GetTrack(mytrack string) revel.Result {
-	revel.INFO.Printf("The track %s was chosen.", mytrack)
-	return c.Render(mytrack)
-}
-
 // Auth initiates the oauth2 authorization request to github
 func (c App) Auth() revel.Result {
 	user := c.currentUser()
@@ -73,18 +67,17 @@ func (c App) AuthCallback() revel.Result {
 	user.Username = auth.GithubUsername()
 
 	revel.INFO.Printf("Successfully authenticated Github user: %s\n", user.Username)
-	return c.Redirect("/tracks") //TODO: redirect to Tracks
+	return c.Redirect("/tracks")
 }
 
 // Workload handles the initial workload page rendering
 func (c App) Workload() revel.Result {
-	// revel.INFO.Printf("The following tracks were chosen: %s, %s, %s", appDev, clusterOp, cnctHire)
 	user := c.currentUser()
 	if err := c.Request.ParseForm(); err != nil {
 		revel.ERROR.Printf("Form not parsed correctly")
 	}
 	var tracks []string
-	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"}
+	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"} //TODO this is where we'd just grab them from user
 	for _, track := range availableTracks {
 		if c.Params.Form.Get(track) != "" {
 			revel.INFO.Println("in for loop", track)
@@ -101,18 +94,20 @@ func (c App) Workload() revel.Result {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
-	return c.Render(user, tracks)
+	return c.Render(user)
 }
 
 // Tracks handles the initial track choice rendering
 func (c App) Tracks() revel.Result {
+	//TODO: read possible tracks from yaml and assign them to User (possibly create yet another field)
 	user := c.currentUser()
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
+	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"}
 
-	return c.Render(user)
+	return c.Render(user, availableTracks)
 }
 
 // WorkloadSocket handles the websocket connection for workload events
