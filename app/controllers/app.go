@@ -87,6 +87,7 @@ func (c App) Workload() revel.Result {
 	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"}
 	for _, track := range availableTracks {
 		if c.Params.Form.Get(track) != "" {
+			revel.INFO.Println("in for loop", track)
 			tracks = append(tracks, track)
 		}
 	}
