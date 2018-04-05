@@ -15,7 +15,7 @@ type (
 		Title       string
 		Assignee    indirectAssignee `yaml:"assignee"`
 		Description string           `yaml:"description,omitempty"`
-		Tags        []string         `yaml:"tags,omitempty"` //TODO: add all the tags and determine if omitempty is what we want"
+		Tags        []string         `yaml:"tags,omitempty"`
 	}
 
 	indirectAssignee struct {
@@ -29,6 +29,7 @@ type (
 		GithubOrganization string                      `yaml:"githubOrganization"`
 		GithubRepository   string                      `yaml:"githubRepository"`
 		Tasks              []TaskEntry                 `yaml:"tasks"`
+		AvailableTracks    []string                    `yaml:"availableTracks"`
 		TaskOwners         map[string]indirectAssignee `yaml:"task_owners"`
 	}
 )

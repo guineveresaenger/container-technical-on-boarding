@@ -77,8 +77,8 @@ func (c App) Workload() revel.Result {
 		revel.ERROR.Printf("Form not parsed correctly")
 	}
 	var tracks []string
-	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"} //TODO this is where we'd just grab them from user
-	for _, track := range availableTracks {
+	// availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"} //TODO this is where we'd just grab them from user
+	for _, track := range user.AvailableTracks {
 		if c.Params.Form.Get(track) != "" {
 			tracks = append(tracks, track)
 		}
@@ -101,11 +101,8 @@ func (c App) Tracks() revel.Result {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
-	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"}
-	//TODO: make availableTracks a User thing and replace here
-	//TODO: Somehow make the string keys human readable
-
-	return c.Render(user, availableTracks)
+	user.AvailableTracks = app.Setup.AvailableTracks
+	return c.Render(user)
 }
 
 // WorkloadSocket handles the websocket connection for workload events

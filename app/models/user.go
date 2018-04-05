@@ -8,10 +8,11 @@ import (
 
 // User model object to manage user authentication
 type User struct {
-	ID       int
-	Username string
-	AuthEnv  *onboarding.AuthEnvironment
-	Tracks   []string
+	ID              int
+	Username        string
+	AuthEnv         *onboarding.AuthEnvironment
+	Tracks          []string
+	AvailableTracks []string
 }
 
 var db = make(map[int]*User)

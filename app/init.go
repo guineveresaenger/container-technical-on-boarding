@@ -117,7 +117,7 @@ func SetupScheme() {
 	configFilename := Configs[OnboardTasksFileName]
 	setup, err := onboarding.NewSetupScheme(configFilename, &Configs)
 	if err != nil {
-		revel.ERROR.Fatalf("Cannat create an onboarding github setup scheme: %v", err)
+		revel.ERROR.Fatalf("Cannot create an onboarding github setup scheme: %v", err)
 	}
 	Setup = setup
 	revel.INFO.Printf("Scheme Setup")
