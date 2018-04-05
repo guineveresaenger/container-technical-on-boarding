@@ -96,7 +96,7 @@ func (c App) Workload() revel.Result {
 	revel.INFO.Println(ttests)
 	revel.INFO.Println("tracks: ", tracks)
 
-	// user.Tracks = tracks
+	user.Tracks = tracks
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
