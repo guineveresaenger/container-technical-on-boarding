@@ -77,17 +77,29 @@ func (c App) AuthCallback() revel.Result {
 }
 
 // Workload handles the initial workload page rendering
-func (c App) Workload(appDev, clusterOp, cnctHire string) revel.Result {
-	revel.INFO.Printf("The following tracks were chosen: %s, %s, %s", appDev, clusterOp, cnctHire)
+func (c App) Workload() revel.Result {
+	// revel.INFO.Printf("The following tracks were chosen: %s, %s, %s", appDev, clusterOp, cnctHire)
 	user := c.currentUser()
+	if err := c.Request.ParseForm(); err != nil {
+		revel.ERROR.Printf("Form not parsed correctly")
+	}
 	var tracks []string
-	tracks = append(tracks, appDev, clusterOp, cnctHire)
-	user.Tracks = tracks
+	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"}
+	for _, track := range availableTracks {
+		if c.Params.Form.Get(track) != "" {
+			tracks = append(tracks, track)
+		}
+	}
+
+	ttests := c.Params.Form.Get("appDev")
+	revel.INFO.Println(ttests)
+	revel.INFO.Println("tracks: ", tracks)
+
+	// user.Tracks = tracks
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
-
 	return c.Render(user, tracks)
 }
 
