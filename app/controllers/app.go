@@ -80,13 +80,9 @@ func (c App) Workload() revel.Result {
 	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"} //TODO this is where we'd just grab them from user
 	for _, track := range availableTracks {
 		if c.Params.Form.Get(track) != "" {
-			revel.INFO.Println("in for loop", track)
 			tracks = append(tracks, track)
 		}
 	}
-
-	ttests := c.Params.Form.Get("appDev")
-	revel.INFO.Println(ttests)
 	revel.INFO.Println("tracks: ", tracks)
 
 	user.Tracks = tracks
@@ -106,6 +102,8 @@ func (c App) Tracks() revel.Result {
 		return c.Redirect("/")
 	}
 	availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"}
+	//TODO: make availableTracks a User thing and replace here
+	//TODO: Somehow make the string keys human readable
 
 	return c.Render(user, availableTracks)
 }
