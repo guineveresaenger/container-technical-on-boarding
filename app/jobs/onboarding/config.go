@@ -67,7 +67,6 @@ func (setup *SetupScheme) load(filename string, environ *map[string]string) erro
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	return setup.ingest(data, environ)
 }
 

@@ -99,8 +99,28 @@ func (c App) Tracks() revel.Result {
 		return c.Redirect("/")
 	}
 	// assign tracks read from yaml to current user
-	user.AvailableTracks = app.Setup.AvailableTracks
+	user.AvailableTracks = c.GetTracks()
 	return c.Render(user)
+}
+
+// GetTracks finds all available tracks from setup scheme information
+func (c App) GetTracks() []string {
+	taskList := app.Setup.Tasks
+	checkTracks := make(map[string]bool)
+	var possibleTracks []string
+	// iterate over tasks
+	for _, task := range taskList {
+		// iterate over tags
+		for _, tag := range task.Tags {
+			// check if tags are already in collection, and if not, append to possibleTracks
+			_, ok := checkTracks[tag]
+			if !ok {
+				checkTracks[tag] = true
+				possibleTracks = append(possibleTracks, tag)
+			}
+		}
+	}
+	return possibleTracks
 }
 
 // WorkloadSocket handles the websocket connection for workload events
