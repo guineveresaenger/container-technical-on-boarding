@@ -29,7 +29,6 @@ type (
 		GithubOrganization string                      `yaml:"githubOrganization"`
 		GithubRepository   string                      `yaml:"githubRepository"`
 		Tasks              []TaskEntry                 `yaml:"tasks"`
-		AvailableTracks    []string                    `yaml:"availableTracks"`
 		TaskOwners         map[string]indirectAssignee `yaml:"task_owners"`
 	}
 )

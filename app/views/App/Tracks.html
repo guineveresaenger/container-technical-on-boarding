@@ -22,7 +22,7 @@
 
 <form action="/workload" method="POST">
     {{ range .user.AvailableTracks }}
-      <input type="checkbox" name={{.}} value={{.}}/> I'm a {{.}}<br/>
+      <input type="checkbox" name={{.}} value={{.}}/> {{.}}<br/>
     {{end}}
     <input type="submit" value="Submit" />
 </form>
