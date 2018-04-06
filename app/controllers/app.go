@@ -76,15 +76,13 @@ func (c App) Workload() revel.Result {
 	if err := c.Request.ParseForm(); err != nil {
 		revel.ERROR.Printf("Form not parsed correctly")
 	}
+	// read tracks chosen in form and assign to user
 	var tracks []string
-	// availableTracks := []string{"app_dev", "cluster_op", "cnct_hire"} //TODO this is where we'd just grab them from user
 	for _, track := range user.AvailableTracks {
 		if c.Params.Form.Get(track) != "" {
 			tracks = append(tracks, track)
 		}
 	}
-	revel.INFO.Println("tracks: ", tracks)
-
 	user.Tracks = tracks
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
@@ -93,14 +91,14 @@ func (c App) Workload() revel.Result {
 	return c.Render(user)
 }
 
-// Tracks handles the initial track choice rendering
+// Tracks handles the rendering of track choices available
 func (c App) Tracks() revel.Result {
-	//TODO: read possible tracks from yaml and assign them to User (possibly create yet another field)
 	user := c.currentUser()
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
+	// assign tracks read from yaml to current user
 	user.AvailableTracks = app.Setup.AvailableTracks
 	return c.Render(user)
 }
