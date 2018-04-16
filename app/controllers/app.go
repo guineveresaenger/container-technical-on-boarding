@@ -70,13 +70,12 @@ func (c App) AuthCallback() revel.Result {
 	return c.Redirect("/tracks")
 }
 
-// Workload handles the initial workload page rendering
+// Workload handles the initial workload page rendering, reads tracks chosen in form and assigns to current user
 func (c App) Workload() revel.Result {
 	user := c.currentUser()
 	if err := c.Request.ParseForm(); err != nil {
 		revel.ERROR.Printf("Form not parsed correctly")
 	}
-	// read tracks chosen in form and assign to user
 	var tracks []string
 	for _, track := range user.AvailableTracks {
 		if c.Params.Form.Get(track) != "" {
@@ -91,14 +90,13 @@ func (c App) Workload() revel.Result {
 	return c.Render(user)
 }
 
-// Tracks handles the rendering of track choices available
+// Tracks handles the rendering of track choices available and assigns them to current user
 func (c App) Tracks() revel.Result {
 	user := c.currentUser()
 	if user == nil {
 		revel.ERROR.Printf("User not setup correctly")
 		return c.Redirect("/")
 	}
-	// assign tracks read from yaml to current user
 	user.AvailableTracks = c.GetTracks()
 	return c.Render(user)
 }
@@ -108,11 +106,9 @@ func (c App) GetTracks() []string {
 	taskList := app.Setup.Tasks
 	checkTracks := make(map[string]bool)
 	var possibleTracks []string
-	// iterate over tasks
 	for _, task := range taskList {
-		// iterate over tags
 		for _, tag := range task.Tags {
-			// check if tags are already in collection, and if not, append to possibleTracks
+			// If tags are not already in collection, append to possibleTracks
 			_, ok := checkTracks[tag]
 			if !ok {
 				checkTracks[tag] = true
