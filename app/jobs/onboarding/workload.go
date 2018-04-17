@@ -138,8 +138,7 @@ func (job GenerateProject) Run() {
 	username := auth.GithubUsername()
 	client, _ := auth.newWorkflowClient(setup.GitHubEndpoint)
 	tracks := job.Tracks
-
-	// TODO = read these somewhere track := job.Setup.Tasks[0].Tags
+	cards := make(map[string]bool)
 
 	defer close(job.New)
 	job.New <- jobs.NewEvent(job.ID, "start", fmt.Sprintf("Starting project generation as %v", username))
@@ -189,16 +188,16 @@ func (job GenerateProject) Run() {
 		job.New <- jobs.NewError(job.ID, "Failed to fetch project columns", err.Error())
 		return
 	}
-	var cards []string
+
 	for _, task := range setup.Tasks {
 		for _, tag := range task.Tags {
 			fmt.Println("Item tagged as:", tag)
 			if CheckTracks(tracks, tag) {
-				if CardExists(cards, task.Title) {
+				_, ok := cards[task.Title]
+				if ok {
 					fmt.Println("This task was created by a previous track already")
 				} else {
-					cards = append(cards, task.Title)
-					fmt.Println("HERE ARE THE CARDS:", cards)
+					cards[task.Title] = true
 					job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
 					issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
 					if err != nil {
@@ -728,17 +727,6 @@ func (repo *WorkflowRepository) ColumnsPresent(project *github.Project, columns 
 func CheckTracks(tracks []string, inputTrack string) bool {
 	for _, track := range tracks {
 		if track == inputTrack {
-			return true
-		}
-	}
-	return false
-}
-
-// CardExists checks if a card has been created already in a different track
-func CardExists(cards []string, inputCard string) bool {
-	fmt.Println("in CardExists")
-	for _, card := range cards {
-		if card == inputCard {
 			return true
 		}
 	}
