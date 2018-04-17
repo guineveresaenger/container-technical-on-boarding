@@ -189,10 +189,10 @@ func (job GenerateProject) Run() {
 		job.New <- jobs.NewError(job.ID, "Failed to fetch project columns", err.Error())
 		return
 	}
-
+	var cards []string
 	for _, task := range setup.Tasks {
 		for _, tag := range task.Tags {
-			fmt.Println(tag)
+			fmt.Println("Hello", tag)
 			if CheckTracks(tracks, tag) {
 				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
 				issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
@@ -203,11 +203,20 @@ func (job GenerateProject) Run() {
 				// NOTE: this fails with HTTP 422 when the the issue already has a card in the project.
 				_, err = repo.CreateCardForIssue(issue, columns["Backlog"])
 				if err != nil {
-					job.New <- jobs.NewError(job.ID, fmt.Sprintf("Error creating card - %v", err), err.Error())
+					if CardExists(cards, task.Title) {
+						fmt.Println("HEEEEKWLKDLSFIDUFOOOOO")
+						fmt.Println("task was created by a previous track already")
+					} else {
+						cards = append(cards, task.Title)
+					}
+					// job.New <- jobs.NewError(job.ID, fmt.Sprintf("Error creating card - %v", err), err.Error())
 					// DO NOT return here.
 				}
 			}
+
 		}
+
+		fmt.Println("HERE ARE THE CARDS:", cards)
 	}
 
 	//https://github.com/alika/test-toby/projects
@@ -722,6 +731,17 @@ func (repo *WorkflowRepository) ColumnsPresent(project *github.Project, columns 
 func CheckTracks(tracks []string, inputTrack string) bool {
 	for _, track := range tracks {
 		if track == inputTrack {
+			return true
+		}
+	}
+	return false
+}
+
+// CardExists checks if a card has been created already in a different track
+func CardExists(cards []string, inputCard string) bool {
+	fmt.Println("in CardExists")
+	for _, card := range cards {
+		if card == inputCard {
 			return true
 		}
 	}
