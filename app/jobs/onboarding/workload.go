@@ -192,11 +192,10 @@ func (job GenerateProject) Run() {
 	var cards []string
 	for _, task := range setup.Tasks {
 		for _, tag := range task.Tags {
-			fmt.Println("Hello", tag)
+			fmt.Println("Item tagged as:", tag)
 			if CheckTracks(tracks, tag) {
 				if CardExists(cards, task.Title) {
-					fmt.Println("HEEEEKWLKDLSFIDUFOOOOO")
-					fmt.Println("task was created by a previous track already")
+					fmt.Println("This task was created by a previous track already")
 				} else {
 					cards = append(cards, task.Title)
 					fmt.Println("HERE ARE THE CARDS:", cards)
