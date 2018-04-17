@@ -194,29 +194,27 @@ func (job GenerateProject) Run() {
 		for _, tag := range task.Tags {
 			fmt.Println("Hello", tag)
 			if CheckTracks(tracks, tag) {
-				job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
-				issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
-				if err != nil {
-					job.New <- jobs.NewError(job.ID, fmt.Sprintf("Failed to create issue - %s", task.Title), err.Error())
-					return
-				}
-				// NOTE: this fails with HTTP 422 when the the issue already has a card in the project.
-				_, err = repo.CreateCardForIssue(issue, columns["Backlog"])
-				if err != nil {
-					if CardExists(cards, task.Title) {
-						fmt.Println("HEEEEKWLKDLSFIDUFOOOOO")
-						fmt.Println("task was created by a previous track already")
-					} else {
-						cards = append(cards, task.Title)
+				if CardExists(cards, task.Title) {
+					fmt.Println("HEEEEKWLKDLSFIDUFOOOOO")
+					fmt.Println("task was created by a previous track already")
+				} else {
+					cards = append(cards, task.Title)
+					fmt.Println("HERE ARE THE CARDS:", cards)
+					job.New <- jobs.NewEvent(job.ID, "progress", fmt.Sprintf("Preparing Issue - %s", task.Title))
+					issue, err := repo.CreateOrUpdateIssue(&task.Assignee.GithubUsername, &task.Title, &task.Description, milestone.GetNumber())
+					if err != nil {
+						job.New <- jobs.NewError(job.ID, fmt.Sprintf("Failed to create issue - %s", task.Title), err.Error())
+						return
 					}
-					// job.New <- jobs.NewError(job.ID, fmt.Sprintf("Error creating card - %v", err), err.Error())
-					// DO NOT return here.
+					// NOTE: this fails with HTTP 422 when the the issue already has a card in the project.
+					_, err = repo.CreateCardForIssue(issue, columns["Backlog"])
+					if err != nil {
+						job.New <- jobs.NewError(job.ID, fmt.Sprintf("Error creating card - %v", err), err.Error())
+						// DO NOT return here.
+					}
 				}
 			}
-
 		}
-
-		fmt.Println("HERE ARE THE CARDS:", cards)
 	}
 
 	//https://github.com/alika/test-toby/projects
