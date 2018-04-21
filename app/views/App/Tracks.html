@@ -7,7 +7,7 @@
   <div class="container">
     <div class="row">
       <h1>Choose your Onboarding Track</h1>
-      <p>We have several different onboarding tracks, each tailored to different users' needs.</p>
+      <p>We offer several different onboarding tracks, each tailored to different users' needs.</p>
     </div>
   </div>
 </header>
@@ -17,8 +17,16 @@
 </div>
 
 <p>
-    Please choose from the following learning tracks. You may select more than one.
+    Please choose from the following learning tracks. You may select more than one. <br>
+    When you click <strong>Submit</strong>, this service will:
 </p>
+<ol>
+  <li>Create a <a href="https://help.github.com/articles/about-milestones/">Milestone</a>
+      and a <a href="https://help.github.com/articles/about-project-boards/">Project</a> in GitHub.</li>
+  <li>Create <a href="https://help.github.com/articles/about-issues/">Issues</a> in Github to represent
+      onboarding tasks, and link them to the Milestone and Project.</li>
+  <li>Assign those issues to your Github user.</li>
+</ol>
 
 <form action="/workload" method="POST">
     {{ range .user.AvailableTracks }}
