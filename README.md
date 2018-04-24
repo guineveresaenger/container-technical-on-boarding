@@ -76,6 +76,12 @@ docker run --net=host codenvy/che-ip
 
 If either of the above indicate another IP address, try reaching that on port 9000.
 
+### Modifying task lists
+
+The tasks are loaded in from a [top-level yaml file](./onboarding-issues.yaml). You can configure these to your own wishes. Things to note:
+- You may modify the `title` and `description` fields for each task. The `assignee` field should remain the same for all tasks.
+- The `tags` field refers to the learning track that each task belongs to. You may devise your own track, e.g. `Learn German`. You would create a task with appropriate content and title, and add `Learn German` to the `tags` entry as a list item, and when the app runs, one of the tracks offered on the website will be "Learn German" and include that task. Tasks can have multiple tags, which you might choose to do if their contents are a requirement for more than one track.
+
 ### Running Locally (in your desktop)
 
 If you prefer to build and run this in Go on your desktop environment,
