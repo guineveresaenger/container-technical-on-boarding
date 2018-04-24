@@ -82,6 +82,19 @@ The tasks are loaded in from a [top-level yaml file](./onboarding-issues.yaml). 
 - You may modify the `title` and `description` fields for each task. The `assignee` field should remain the same for all tasks.
 - The `tags` field refers to the learning track that each task belongs to. You may devise your own track, e.g. `Learn German`. You would create a task with appropriate content and title, and add `Learn German` to the `tags` entry as a list item, and when the app runs, one of the tracks offered on the website will be "Learn German" and include that task. Tasks can have multiple tags, which you might choose to do if their contents are a requirement for more than one track.
 
+#### Custom task list with CNCT onboarding chart
+
+There is a [helm chart](https://github.com/samsung-cnct/chart-technical-on-boarding) that deploys the official CNCT onboarding app. Its default container image is hosted in CNCT's [Quay](http://quay.io) container registry. To use your own container, follow these steps:
+
+1. In the container-technical-onboarding directory, run:
+`IMAGE_NAME=<your_custom_container>:<local-dev> make docker-build`
+2. Host the resulting container image in a container registry such as DockerHub or Quay
+3. Follow [instructions](https://github.com/samsung-cnct/chart-technical-on-boarding/README.md#custom-task-board) in the onboarding helm chart to edit the `values.yaml` file to have the `image` and `tag` fields point at your container registry link.
+
+
+
+
+
 ### Running Locally (in your desktop)
 
 If you prefer to build and run this in Go on your desktop environment,
