@@ -7,35 +7,39 @@
   <h2>Workload</h2>
 
 <p>Welcome {{.user.Username}}. The project is being generated. Results are displayed below.</p>
-  <div id="events">
-    <script type="text/html" id="event_tmpl">
-      {{raw "<%"}} if(event.Type == 'start') { %>
-        <div class="alert alert-success">
-          <p>Starting: {{raw "<%"}}= event.Text %></p>
-        </div>
-      {{raw "<%"}} } %>
-      {{raw "<%"}} if(event.Type == 'progress') { %>
-        <div class="alert alert-info">
-          <p>Progress: {{raw "<%"}}= event.Text %></p>
-        </div>
-      {{raw "<%"}} } %>
-      {{raw "<%"}} if(event.Type == 'complete') { %>
-        <div class="alert alert-success">
-          <p>Completed: {{raw "<%"}}= event.Text %></p>
-        </div>
-      {{raw "<%"}} } %>
-      {{raw "<%"}} if(event.Type == 'error') { %>
-        <div class="alert alert-warning">
-          <p>Error: {{raw "<%"}}= event.Text %></p>
-        </div>
-      {{raw "<%"}} } %>
-    </script>
-  </div>
-</div>
 
-<p>
-  <a href="#" class="btn btn-primary btn-lg" role="button">Go to task board</a>
-</p>
+<div id="events">
+  <script type="text/html" id="event_tmpl">
+    {{raw "<%"}} if(event.Type == 'start') { %>
+      <div class="alert alert-success">
+        <p>Starting: {{raw "<%"}}= event.Text %></p>
+      </div>
+    {{raw "<%"}} } %>
+    {{raw "<%"}} if(event.Type == 'progress') { %>
+      <div class="alert alert-info">
+        <p>Progress: {{raw "<%"}}= event.Text %></p>
+      </div>
+    {{raw "<%"}} } %>
+    {{raw "<%"}} if(event.Type == 'complete') { %>
+      <div class="alert alert-success">
+        <p>Completed: {{raw "<%"}}= event.Text %></p>
+      </div>
+    {{raw "<%"}} } %>
+
+    {{raw "<%"}} if(event.Type == 'complete') { %>
+      <p>
+          <a href="event.Text" class="btn btn-primary btn-lg" role="button">Go to task board</a>
+      </p>
+    {{raw "<%"}} event.Text } %>
+
+    {{raw "<%"}} if(event.Type == 'error') { %>
+      <div class="alert alert-warning">
+        <p>Error: {{raw "<%"}}= event.Text %></p>
+      </div>
+    {{raw "<%"}} } %>
+  </script>
+</div>
+</div>
 
 <script type="text/javascript">
   var wsuri = ((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host+'/workload/socket'

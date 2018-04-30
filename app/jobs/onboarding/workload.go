@@ -217,7 +217,7 @@ func (job GenerateProject) Run() {
 
 	//https://github.com/alika/test-toby/projects
 	projectsURL := fmt.Sprintf("https://github.com/%s/%s/projects/", job.Setup.GithubOrganization, job.Setup.GithubRepository)
-	completed := fmt.Sprintf("Successfully created project @ %s", projectsURL)
+	completed := fmt.Sprint(projectsURL)
 	job.New <- jobs.NewEvent(job.ID, "complete", completed)
 }
 
