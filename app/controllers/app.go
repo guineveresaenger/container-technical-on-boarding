@@ -140,7 +140,7 @@ func (c App) GetTracks() []string {
 // GoToBoard redirects to created project board
 func (c App) GoToBoard() revel.Result {
 	fmt. Println("UNICORNS", app.Setup.GithubOrganization, app.Setup.GithubRepository)
-	return c.Redirect(app.OnboardOrgName)
+	return c.Redirect(app.Setup.GithubOrganization)
 }
 
 // WorkloadSocket handles the websocket connection for workload events
