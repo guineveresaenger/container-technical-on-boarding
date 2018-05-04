@@ -13,6 +13,7 @@ GET     /authcb                                 App.AuthCallback
 GET     /workload                               App.Workload
 POST    /workload                               App.Workload
 GET     /tracks                                 App.Tracks
+GET     /gotoboard                              App.GoToBoard
 WS      /workload/socket                        App.WorkloadSocket
 GET     /about                                  App.About
 
