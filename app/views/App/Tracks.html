@@ -1,39 +1,36 @@
 {{set . "title" "Home"}}
+{{set . "header" "Choose Your Learning Track"}}
 {{template "header.html" .}}
+{{template "navigation.html" .}}
 
-<div class="container theme-showcase" role="main">
-
-<header class="jumbotron" style="background-color:#80f2db">
-  <div class="container">
-    <div class="row">
-      <h1>Choose your Onboarding Track</h1>
-      <p>We offer several different onboarding tracks, each tailored to different users' needs.</p>
-    </div>
-  </div>
-</header>
-
-<div class="page-header">
+<div class="container section">
   <h1>Instructions</h1>
-</div>
 
-<p>
-    Please choose from the following learning tracks. You may select more than one. <br>
+  <p>
+      Please choose from the following learning tracks. You may select more than one.
+  </p>
+  <p>
     When you click <strong>Submit</strong>, this service will:
-</p>
-<ol>
-  <li>Create a <a href="https://help.github.com/articles/about-milestones/">Milestone</a>
-      and a <a href="https://help.github.com/articles/about-project-boards/">Project</a> in GitHub.</li>
-  <li>Create <a href="https://help.github.com/articles/about-issues/">Issues</a> in Github to represent
-      onboarding tasks, and link them to the Milestone and Project.</li>
-  <li>Assign those issues to your Github user.</li>
-</ol>
+  </p>
+  <ol>
+    <li>Create a <a href="https://help.github.com/articles/about-milestones/">Milestone</a>
+        and a <a href="https://help.github.com/articles/about-project-boards/">Project</a> in GitHub.</li>
+    <li>Create <a href="https://help.github.com/articles/about-issues/">Issues</a> in Github to represent
+        onboarding tasks, and link them to the Milestone and Project.</li>
+    <li>Assign those issues to your Github user.</li>
+  </ol>
 
-<form action="/workload" method="POST">
-    {{ range .user.AvailableTracks }}
-      <input type="checkbox" name={{.}} value={{.}}/> {{.}}<br/>
-    {{end}}
-    <input type="submit" value="Submit" />
-</form>
+  <form name="workload" action="/workload" method="POST">
+      {{ range .user.AvailableTracks }}
+        <p>
+          <input type="checkbox" name={{.}} value={{.}} />
+          <span class="blue-text">{{.}}</span>
+        </p>
+      {{end}}
+
+      <a class="btn btn-lg btn-primary blue" onclick="document.workload.submit();return false;">Submit</a>
+  </form>
+</div>
 
 <div class="container">
   <div class="row">
@@ -41,8 +38,6 @@
       {{template "flash.html" .}}
     </div>
   </div>
-</div>
-
 </div>
 
 {{template "footer.html" .}}

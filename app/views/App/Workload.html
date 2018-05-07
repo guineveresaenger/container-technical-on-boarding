@@ -1,38 +1,36 @@
 {{set . "title" "Workload"}}
+{{set . "header" "Workload creation"}}
 {{template "header.html" .}}
+{{template "navigation.html" .}}
 
-<div class="container theme-showcase" role="main">
-
-<div class="page-header">
-  <h1>Workload</h1>
-</div>
+<div class="container section">
+  <h2>Workload</h2>
 
 <p>Welcome {{.user.Username}}. The project is being generated. Results are displayed below.</p>
-
-<div id="events">
-  <script type="text/html" id="event_tmpl">
-    {{raw "<%"}} if(event.Type == 'start') { %>
-      <div class="alert alert-success">
-        <p>Starting: {{raw "<%"}}= event.Text %></p>
-      </div>
-    {{raw "<%"}} } %>
-    {{raw "<%"}} if(event.Type == 'progress') { %>
-      <div class="alert alert-info">
-        <p>Progress: {{raw "<%"}}= event.Text %></p>
-      </div>
-    {{raw "<%"}} } %>
-    {{raw "<%"}} if(event.Type == 'complete') { %>
-      <div class="alert alert-success">
-        <p>Completed: {{raw "<%"}}= event.Text %></p>
-      </div>
-    {{raw "<%"}} } %>
-    {{raw "<%"}} if(event.Type == 'error') { %>
-      <div class="alert alert-warning">
-        <p>Error: {{raw "<%"}}= event.Text %></p>
-      </div>
-    {{raw "<%"}} } %>
-  </script>
-</div>
+  <div id="events">
+    <script type="text/html" id="event_tmpl">
+      {{raw "<%"}} if(event.Type == 'start') { %>
+        <div class="alert alert-success">
+          <p>Starting: {{raw "<%"}}= event.Text %></p>
+        </div>
+      {{raw "<%"}} } %>
+      {{raw "<%"}} if(event.Type == 'progress') { %>
+        <div class="alert alert-info">
+          <p>Progress: {{raw "<%"}}= event.Text %></p>
+        </div>
+      {{raw "<%"}} } %>
+      {{raw "<%"}} if(event.Type == 'complete') { %>
+        <div class="alert alert-success">
+          <p>Completed: {{raw "<%"}}= event.Text %></p>
+        </div>
+      {{raw "<%"}} } %>
+      {{raw "<%"}} if(event.Type == 'error') { %>
+        <div class="alert alert-warning">
+          <p>Error: {{raw "<%"}}= event.Text %></p>
+        </div>
+      {{raw "<%"}} } %>
+    </script>
+  </div>
 </div>
 
 <script type="text/javascript">

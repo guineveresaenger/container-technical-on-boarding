@@ -1,5 +1,28 @@
-{{if eq .RunMode "dev"}}
-    {{template "debug.html" .}}
-  {{end}}
+
+
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <div class="container">
+        <p id="copyright">©2017 Samsung SDS. All rights reserved v1.0</p>
+        <div class="right">
+          <a href="https://www.samsungsds.com/us/en/etc/privacy.html">Privacy</a>
+          <span class="mark">|</span>
+          <a href="https://www.samsungsds.com/us/en/etc/legal.html">Legal</a>
+          <span class="mark">|</span>
+          <a href="https://www.samsungsds.com/us/en/etc/non.html">Non-Discrimiation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <!-- Support for JQuery and Materialize CSS-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/public/js/templating.js"></script>
+    <script src="/public/js/materialize.js"></script>
+    <script src="/public/js/init.js"></script>
+
+    {{if eq .RunMode "dev"}}
+      {{template "debug.html" .}}
+    {{end}}
   </body>
 </html>

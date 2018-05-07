@@ -1,0 +1,96 @@
+/*********************
+  Page Styles
+**********************/
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  color: black;
+  height: 100%;
+}
+
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.no-margin {
+  margin: 0px 0px 0px 0px;
+}
+
+.no-margin-top {
+  margin-top: 0px;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0px;
+}
+
+.page-separator {
+  background-color: #303030;
+}
+
+/* The hero image */
+.hero-image {
+  background-image: url("/public/img/background-smithtower.jpg");
+  height: 35%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Place text in the middle of the image */
+.hero-text {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+/*********************
+  Navigation Styles
+**********************/
+
+nav {
+  background-color: white;
+  box-shadow: none;
+  color: #133890;
+}
+
+nav ul a {
+  color: #133890;
+}
+
+@media only screen and (max-width: 600px) {
+  nav .logo {
+    width: 225px;
+    padding-top: 10px;
+  }
+
+  .hero-image {
+    height: 25%;
+  }
+}
+
+/*********************
+  Footer Styles
+**********************/
+footer.page-footer {
+  background-color: #133890;
+  margin-top: 100px
+}
+
+footer.page-footer .footer-copyright {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(51, 51, 51, 0.09);
+}
+
+footer .mark {
+  margin: 0 10px;
+  vertical-align: middle;
+}

@@ -28,6 +28,11 @@ func (c App) Index() revel.Result {
 	return c.Render()
 }
 
+// About of web app
+func (c App) About() revel.Result {
+	return c.Render()
+}
+
 // Auth initiates the oauth2 authorization request to github
 func (c App) Auth() revel.Result {
 	user := c.currentUser()

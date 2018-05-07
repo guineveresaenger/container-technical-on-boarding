@@ -11,9 +11,10 @@ GET     /version                                App.Version
 GET     /auth                                   App.Auth
 GET     /authcb                                 App.AuthCallback
 GET     /workload                               App.Workload
-POST     /workload                              App.Workload
+POST    /workload                               App.Workload
 GET     /tracks                                 App.Tracks
 WS      /workload/socket                        App.WorkloadSocket
+GET     /about                                  App.About
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
