@@ -139,7 +139,8 @@ func (c App) GetTracks() []string {
 
 // GoToBoard redirects to created project board
 func (c App) GoToBoard() revel.Result {
-	boardAddress := "http://www.github.com/" + app.Setup.GithubOrganization + "/" + app.Setup.GithubRepository + "/projects"
+	user := c.currentUser()
+	boardAddress := fmt.Sprintf("http://www.github.com/%s/%s/projects/%s", app.Setup.GithubOrganization, app.Setup.GithubRepository, user.ProjectNumber)
 	return c.Redirect(boardAddress)
 }
 
@@ -195,6 +196,10 @@ func (c App) WorkloadSocket(ws *websocket.Conn) revel.Result {
 				// They disconnected.
 				revel.INFO.Printf("The user '%s' has disconnected", user.Username)
 				return nil
+			}
+
+			if event.ProjectNumber != "" {
+				user.ProjectNumber = event.ProjectNumber
 			}
 		case msg, ok := <-newMessages:
 			// If the channel is closed, they disconnected.

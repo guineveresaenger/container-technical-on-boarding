@@ -183,6 +183,8 @@ func (job GenerateProject) Run() {
 		return
 	}
 
+	job.New <- jobs.NewProjectEvent(job.ID, "progress", fmt.Sprintf("Created Project with number - %d", *project.Number), strconv.Itoa(*project.Number))
+
 	columns, err := repo.FetchMappedProjectColumns(project)
 	if err != nil {
 		job.New <- jobs.NewError(job.ID, "Failed to fetch project columns", err.Error())
